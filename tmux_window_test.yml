@@ -1,0 +1,18 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Spawn a window and send some keys
+      tmux_control:
+        session_name: tester
+        window_name: tester
+        remain_on_exit: yes
+        set_active: yes
+        send_keys:
+          - echo asd
+          - echo `echo backtick test`
+          - sleep 3
+          - echo qwe
+
