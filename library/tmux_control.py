@@ -65,6 +65,7 @@ def run_module():
         commands=[]
     )
     
+    #TODO: handle fail if no tmux
     _TPATH = sp.check_output(['/usr/bin/command','-v','tmux']).strip().decode('utf-8')
     
     
@@ -75,6 +76,7 @@ def run_module():
         else:
             cmds = [_TPATH]+cmds
         
+        #TODO: clean this up, only if verbose maybe
         result['commands'].append(' '.join(cmds))
 
         ret = sp.run(cmds,capture_output=True)
@@ -86,8 +88,7 @@ def run_module():
     
 
     def is_server_running():
-        ret = do_tmux(['ls'])
-        result['messagea'] = ret
+        ret = do_tmux(['ls']) #TODO: tots can do this better
         return ret
 
 
@@ -125,13 +126,11 @@ def run_module():
         
         if _windows.get(module.params['session_name'],False):
             if module.params['window_name']:
-                #kill window
                 cmds.extend(['kill-window',
                              '-t',
                              ':'.join([module.params['session_name'],module.params['window_name']])] )
                              
             else:
-                #kill session
                 cmds.extend(['kill-session',
                              '-t',
                              module.params['session_name']])
